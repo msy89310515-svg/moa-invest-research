@@ -11,11 +11,23 @@ const patterns={
  credential_literal:/(?:DASHBOARD_PASSWORD|CLOUDFLARE_API_TOKEN|api_key|client_secret)["']?\s*[:=]\s*["'][A-Za-z0-9_+/.=-]{20,}["']/i
 };
 const names=execFileSync('git',['ls-files','-z'],{encoding:'utf8'}).split('\0').filter(Boolean),findings=[];
-for(const file of names){
- if(!allowed.has(file)){findings.push({file,rule:'not_in_public_allowlist'});continue;}
- const text=execFileSync('git',['show',':'+file],{encoding:'utf8'});
- for(const [rule,pattern] of Object.entries(patterns))if(pattern.test(text))findings.push({file,rule});
+function inspect(file,text,revision){
+ const location={file,...(revision?{revision}:{})};
+ if(!allowed.has(file)){findings.push({...location,rule:'not_in_public_allowlist'});return;}
+ for(const [rule,pattern] of Object.entries(patterns))if(pattern.test(text))findings.push({...location,rule});
 }
-// No matched values are ever printed.
-console.log(JSON.stringify({files:names.length,findings,status:findings.length?'BLOCKED':'PASSED'},null,2));
+for(const file of names)inspect(file,execFileSync('git',['show',':'+file],{encoding:'utf8'}));
+let historyBlobs=0;
+const base=process.argv[2];
+if(base){
+ // Explicit base is mandatory for reviewing outgoing history; invalid refs fail closed.
+ execFileSync('git',['merge-base','--is-ancestor',base,'HEAD']);
+ const revisions=execFileSync('git',['rev-list',base+'..HEAD'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);
+ for(const rev of revisions){
+  const files=execFileSync('git',['ls-tree','-r','--name-only','-z',rev],{encoding:'utf8'}).split('\0').filter(Boolean);
+  for(const file of files){inspect(file,execFileSync('git',['show',rev+':'+file],{encoding:'utf8'}),rev);historyBlobs++;}
+ }
+}
+// No matched values are ever printed. History catches files added and removed before HEAD.
+console.log(JSON.stringify({files:names.length,historyBlobs,historyChecked:Boolean(base),findings,status:findings.length?'BLOCKED':'PASSED'},null,2));
 if(findings.length)process.exitCode=2;
