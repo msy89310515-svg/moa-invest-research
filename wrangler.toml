@@ -1,0 +1,9 @@
+name = "moa-invest-research"
+main = "src/index.js"
+compatibility_date = "2026-10-15"
+workers_dev = true
+
+[vars]
+RESEARCH_ENABLED = "false"
+
+# No cron or D1 bindings until access and migration are verified.
