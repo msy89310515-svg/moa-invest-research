@@ -10,6 +10,6 @@ This repository contains a **research-only Cloudflare Worker shell**, not propri
 - `RESEARCH_ENABLED` defaults to `false`.
 - No secrets, customer data, exchange keys or strategy internals are stored here.
 
-**Important:** This shell does **not** yet collect market data, retrain models, or discover strategies. Those components remain in the private `heigoro` repository. Do not enable the cron until private logic, storage, access control and runtime tests are integrated.
+**Staged integration:** Public collection, D1/job storage, authentication and the phone dashboard are implemented and tested locally. Daily/weekly computation uses a private Service Binding; strategy/model source remains private. The deployment config remains disabled. No remote migration or activation has occurred.
 
-The root page intentionally shows only a safe deployment status; it is not an authenticated trading dashboard.
+The root page requires configured authentication. It displays research aggregates only, with no trading or automatic adoption. See [integration instructions and remaining work](docs/INTEGRATION.md).

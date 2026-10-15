@@ -1,0 +1,43 @@
+{
+  "mode": "local_real_market_and_SQLite_service_binding_contract",
+  "market_rows": 8764,
+  "reports": 3,
+  "private_versions": 2,
+  "jobs": [
+    {
+      "kind": "collect",
+      "status": "DONE"
+    },
+    {
+      "kind": "daily",
+      "status": "DONE"
+    },
+    {
+      "kind": "weekly",
+      "status": "DONE"
+    }
+  ],
+  "authenticated_dashboard_http": 200,
+  "authenticated_api_http": 200,
+  "duplicate_jobs_skipped": true,
+  "no_private_model_in_public_api": true,
+  "no_auto_adoption": true,
+  "private_engine_wall_ms": [
+    196.10309999999993,
+    457.2481
+  ],
+  "cloudflare_runtime_verified": false,
+  "iphone_physical_device_verified": false,
+  "existing_paper_worker_modified": false,
+  "tests": {
+    "public": 19,
+    "private_including_existing_regressions": 94,
+    "total": 113
+  },
+  "deployment_performed": false,
+  "remote_d1_migration_performed": false,
+  "paid_resources_created": false,
+  "public_allowlist_files": 20,
+  "public_secret_findings": 0,
+  "paper_migration_directory_unchanged": true
+}

@@ -1,0 +1,18 @@
+# NOT DEPLOYED. Copy only after dedicated databases, quotas and access have been reviewed.
+name = "moa-invest-research"
+main = "src/index.js"
+compatibility_date = "2026-10-15"
+workers_dev = true
+[vars]
+RESEARCH_ENABLED = "false"
+# Set DASHBOARD_USER / DASHBOARD_PASSWORD as Worker secrets, never in this file.
+[[d1_databases]]
+binding = "DB"
+database_name = "moa-research-market-db"
+database_id = "REPLACE_WITH_DEDICATED_RESEARCH_UUID"
+[[services]]
+binding = "RESEARCH_ENGINE"
+service = "moa-invest-private-research"
+# Leave disabled until runtime CPU and D1 quotas have been verified.
+#[triggers]
+#crons = ["*/30 * * * *"]
